@@ -13,9 +13,9 @@ datas = [
 
 def get_pgrid(grid_type, grid):
     if grid_type == "uniform":
-        p_grid = [1 / len(grid)] * len(grid)
+        p_grid = [1] * len(grid)
     elif grid_type == "step":
-        raw_p_grid = [0 if lam < 0.5 else 1 for lam in grid]
+        raw_p_grid = [0 if lam < 0.5 else 2 for lam in grid]
         grid_norm = np.sum(raw_p_grid)
         p_grid = [p / grid_norm for p in raw_p_grid]
 
