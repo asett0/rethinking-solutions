@@ -5,6 +5,7 @@ import pyro.distributions as dist
 import torch
 import pyro.ops.stats as stats
 from matplotlib import pyplot as plt
+import pickle
 
 pyro.set_rng_seed(100)
 
@@ -171,7 +172,63 @@ def main(args):
     sum(prediction_samples == 6) / len(prediction_samples)
 
     compute_pi_width(100, 0.7)
+
     # Hard questions
+
+    with open("data/birth1.pkl") as f:
+        birth1 = torch.tensor(pickle.load(f))
+
+    with open("data/birth2.pkl") as f:
+        birth2 = torch.tensor(pickle.load(f))
+
+    n = 100
+    lam_grid = torch.linspace(0, 1, n)
+    prior = torch.tensor(1).repeat(n)
+
+    likelihood = (
+        dist.Binomial(
+            total_count=torch.tensor(
+                torch.size(birth1) + torch.size(birth2)
+            ).item(),
+            probs=lam_grid,
+        )
+        .log_prob(torch.sum(birth1) + torch.sum(birth2))
+        .exp()
+    )
+
+    posterior = likelihood * prior
+    posterior = posterior / torch.sum(posterior)
+
+    lam_grid[torch.argmax(posterior)]
+
+    samples = dist.Empirical(lam_grid, posterior.log()).sample(
+        torch.Size(10000)
+    )
+
+    stats.hpdi(medium_samples, prob=0.50)
+    stats.hpdi(medium_samples, prob=0.89)
+    stats.hpdi(medium_samples, prob=0.97)
+
+    predictions = dist.Binomial(
+        total_count=torch.tensor(
+            torch.size(birth1) + torch.size(birth2)
+        ).item(),
+        probs=samples,
+    ).sample(torch.Size([10000]))
+
+    # compare to torch.sum(birth1) + torch.sum(birth2)
+
+    predictions = dist.Binomial(
+        total_count=torch.tensor(torch.size(birth1)).item(), probs=samples
+    ).sample(torch.Size([10000]))
+
+    # compare to torch.sum(birth1) + torch.sum(birth2)
+
+    predictions = dist.Binomial(
+        total_count=torch.tensor(torch.sum(birth1 == 0)).item(), probs=samples
+    ).sample(torch.Size([10000]))
+
+    # Compare to torch.sum(birth2[birth1 == 0])
 
 
 if __name__ == "__main__":
