@@ -1,30 +1,24 @@
 # Chapter 1 Exercises
 
+## 2E1
 (2), (4)
 
 ## 2E2
-
 (3)
 
 ## 2E3
-
 (1), (4)
 
-
 ## 2E4
-
-Tossing the globe is not actually random. It's just that the deterministic processes that determines whether it lands on water or land are very complicated. 
+Tossing the globe is not actually random. However the deterministic processes that determines whether it lands on water or land are very complicated and determining and describing this process is very difficult. Hence to do something useful we treat the outcome of the globe toss as effectively random to obtain some information about the globe.
 
 ## 2M1 
-
 See code in `chap2.py`
 
 ## 2M2
-
 See code in `chap2.py`
 
 ## 2M3
-
 ```
 P(Earth | land) = P(land | Earth)P(Earth)/P(land)
 P(land) = P(land | Earth) P(Earth) + P(land | Mars) P(Mars)
@@ -35,8 +29,8 @@ P(Earth | land) = 0.2307
 ```
 
 ## 2M4
-Let B represent the number of black sides on the drawn card.
-Let SS represent the the shown side of the drawn card 
+- Let `B` represent the number of black sides on the drawn card.
+- Let `SS` represent the the shown side of the drawn card.
 ```
 P(B=2 | SS=Black) = 2/N
 P(B=1 | SS=Black) = 1/N
@@ -76,10 +70,10 @@ P(B=0 | SS=Black) = 0
 ```
 
 ## 2M7
-Let SSFC represent the shown side of the first drawn card
-Let SSSC represent the shown side of the second drawn card
-Let FB represent the number of black sides on the first drawn card
-Let SB represent the number of black sides on the second drawn card
+- Let `SSFC` represent the shown side of the first drawn card.
+- Let `SSSC` represent the shown side of the second drawn card.
+- Let `FB` represent the number of black sides on the first drawn card.
+- Let `SB` represent the number of black sides on the second drawn card.
 ```
 P(FB=0, SB=1 | FB=Black, SB=White) = 0*1/N 
 P(FB=0, SB=2 | FB=Black, SB=White) = 0*0/N
@@ -97,52 +91,62 @@ P(FB=2 | FB=Black, SB=White) = 3/4
 ```
 
 ## 2H1
+- Let `FB` represent the outcome of the first birth from the panda. 
+- Let `SB` represent the outcome of the second birth from the panda.
 ```
-P(Twins| A) = 0.1
-P(Twins | B) = 0.2 
-P(Second Birth Twins | First Birth Twins) = P(First Birth Twins, Second Birth Twins)/ P(First Birth Twins)
+P(FB=Twins| A) = 0.1
+P(FB=Twins | B) = 0.2 
+P(SB=Twins | FB=Twins) = P(FB=Twins, SB=Twins)/P(FB=Twins)
 
-P(First Birth Twins) = P(First Birth Twins | A) P(A) + P(First Birth Twins | B)  P (B)
+P(FB=Twins) = P(FB=Twins | A) P(A) + P(FB=Twins | B) P (B)
+P(FB=Twins) = 0.15
 
-P(First Birth Twins) = 0.15
-
-P(First Birth Twins, Second Birth Twins) = P(First Birth Twins, Second Birth Twins|A)P(A) + P(First Birth Twins, Second Birth Twins | B) P(B) 
-P(First Birth Twins, Second Birth Twins) = 0.1*0.1*0.5 + 0.2*0.2*0.5 = 0.025
-P(Second Birth Twins | First Birth Twins) = 0.025 / 0.15 = 0.1666
-
+P(FB=Twins, SB=Twins) = P(FB=Twins, SB=Twins|A) P(A) + P(FB=Twins, SB=Twins | B) P(B) 
+P(FB=Twins, SB=Twins) = 0.1*0.1*0.5 + 0.2*0.2*0.5 = 0.025
+P(SB=Twins | FB=Twins) = 0.025/0.15 
+P(SB=Twins | FB=Twins) = 0.1666
 ```
-
 
 ## 2H2
-
-```P(A | First Birth Twins) = P(First Birth Twins | A)* P(A)/P(First Birth Twins)
-P(A | First Birth Twins) = 0.1 * 0.5 / 0.15
-P(A | First Birth Twins) = 0.33333
+```
+P(A | FB=Twins) = P(FB=Twins | A) P(A)/P(FB=Twins)
+P(A | FB=Twins) = 0.1*0.5/0.15
+P(A | FB=Twins) = 0.33333
 ```
 
 ## 2H3
 ```
-P(A | Second Birth Single, First Birth Twins) = P(Second Birth Single , First Birth Twins | A) P(A)/P(Second Birth Single , First Birth Twins)
-P(A | Second Birth Single, First Birth Twins) = 0.09 * 0.5 / 0.125
-P(A | Second Birth Single, First Birth Twins) = 0.36
-```
-Alternatively
-```
-P(A | Second Birth Single, First Birth Twins)  = P(Second Birth Single | A, First Birth Twin) P(A| First Birth Twin)
-/P(Second Birth Single | First Birth Twins) = 0.36
+P(A | SB=Single, FB=Twins) = P(SB=Single | A, FB=Twins) P(A | FB=Twins)/P(SB=Single | FB=Twins) 
+
+P(SB=Single | FB=Twins) = 1 - P(SB=Twins | FB=Twins)
+P(SB=Single | FB=Twins) = 1 - 0.1666
+P(SB=Single | FB=Twins) = 0.8333
+
+P(A | SB=Single, FB=Twins) = 0.9*0.3333/0.8333
+P(A | SB=Single, FB=Twins) = 0.36
 ```
 
 ## 2H4
+- Let `T` represent the outcome of the test.
 ```
-P(Test is A | A) = 0.8
-P(Test is B | B) = 0.65
+P(T=A | A) = 0.8
+P(T=B | B) = 0.65
 
-P(A | Test is A) = P(Test is A | A)*P(A)/P(Test is A)
-P(A | Test is A) = 0.8 * 0.5 / (0.8*0.5 + 0.35 * 0.5)
-P(A | Test is A) = 0.69565
-```
-```
-P(A | Test is A, Second Birth Single, First Birth Twins) = P(Test is A | A, First Birth is Twins, Second Birth is Single) P(A | First Birth Twins, Second Birth Single)/ P(Test is A | First Birth Twins, Second Birth Single)
-P(A | Test is A, Second Birth Single, First Birth Twins) = 0.8 * 0.36 / (0.8 * 0.36 + 0.35 * 0.64 )
-P(A | Test is A, Second Birth Single, First Birth Twins) = 0.5625
+P(A | T=A) = P(T=A | A) P(A)/P(T=A)
+
+P(T=A) = P(T=A | A) P(A) + P(T=A | B) P(B)
+P(T=A) = 0.8*0.5 + 0.35*0.5
+P(T=A) = 0.575
+
+P(A | T=A) = 0.8*0.5/0.575
+P(A | T=A) = 0.6957
+
+P(A | T=A, SB=Single, FB=Twins) = P(T=A | A, FB=Twins, SB=Single) P(A | FB=Twins, SB=Single)/P(T=A | FB=Twins, SB=Single)
+
+P(T=A | FB=Twins, SB=Single) = P(T=A | A, FB=Twins, SB=Single) P(A | FB=Twins, SB=Single) + P(T=A | B, FB=Twins, SB=Single) P(B | FB=Twins, SB=Single)
+P(T=A | FB=Twins, SB=Single) = 0.8*0.36 + 0.35*0.64
+P(T=A | FB=Twins, SB=Single) = 0.512
+
+P(A | T=A, SB=Single, FB=Twins) = 0.8*0.36/0.512
+P(A | T=A, SB=Single, FB=Twins) = 0.5625
 ```
