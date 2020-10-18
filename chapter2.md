@@ -20,11 +20,11 @@ See code in `chap2.py`
 
 ## 2M3
 ```
-P(Earth | land) = P(land | Earth)P(Earth)/P(land)
+P(Earth | land) = P(land | Earth) P(Earth)/P(land)
 P(land) = P(land | Earth) P(Earth) + P(land | Mars) P(Mars)
-P(land) = 0.3 * 0.5  + 1 * 0.5
+P(land) = 0.3*0.5  + 1*0.5
 P(land) = 0.65
-P(Earth | land) = 0.3 * 0.5 / 0.65
+P(Earth | land) = 0.3*0.5/0.65
 P(Earth | land) = 0.2307
 ```
 
@@ -75,19 +75,19 @@ P(B=0 | SS=Black) = 0
 - Let `FB` represent the number of black sides on the first drawn card.
 - Let `SB` represent the number of black sides on the second drawn card.
 ```
-P(FB=0, SB=1 | FB=Black, SB=White) = 0*1/N 
-P(FB=0, SB=2 | FB=Black, SB=White) = 0*0/N
-P(FB=1, SB=0 | FB=Black, SB=White) = 1*2/N
-P(FB=1, SB=2 | FB=Black, SB=White) = 1*0/N
-P(FB=2, SB=0 | FB=Black, SB=White) = 2*2/N
-P(FB=2, SB=1 | FB=Black, SB=White) = 2*1/N
+P(FB=0, SB=1 | SSFC=Black, SSSC=White) = 0*1/N 
+P(FB=0, SB=2 | SSFC=Black, SSSC=White) = 0*0/N
+P(FB=1, SB=0 | SSFC=Black, SSSC=White) = 1*2/N
+P(FB=1, SB=2 | SSFC=Black, SSSC=White) = 1*0/N
+P(FB=2, SB=0 | SSFC=Black, SSSC=White) = 2*2/N
+P(FB=2, SB=1 | SSFC=Black, SSSC=White) = 2*1/N
 
 0/N + 0/N + 2/N + 0/N + 4/N + 2/N = 1
 N=8
 
-P(FB=2 | FB=Black, SB=White) = P(FB=2, SB=0 | FB=Black, SB=White) + P(FB=2, SB=1 | FB=Black, SB=White)
-P(FB=2 | FB=Black, SB=White) = 4/8 + 2/8
-P(FB=2 | FB=Black, SB=White) = 3/4
+P(FB=2 | SSFC=Black, SSSC=White) = P(FB=2, SB=0 | SSFC=Black, SSSC=White) + P(FB=2, SB=1 | SSFC=Black, SSSC=White)
+P(FB=2 | SSFC=Black, SSSC=White) = 4/8 + 2/8
+P(FB=2 | SSFC=Black, SSSC=White) = 3/4
 ```
 
 ## 2H1
@@ -98,7 +98,7 @@ P(FB=Twins| A) = 0.1
 P(FB=Twins | B) = 0.2 
 P(SB=Twins | FB=Twins) = P(FB=Twins, SB=Twins)/P(FB=Twins)
 
-P(FB=Twins) = P(FB=Twins | A) P(A) + P(FB=Twins | B) P (B)
+P(FB=Twins) = P(FB=Twins | A) P(A) + P(FB=Twins | B) P(B)
 P(FB=Twins) = 0.15
 
 P(FB=Twins, SB=Twins) = P(FB=Twins, SB=Twins|A) P(A) + P(FB=Twins, SB=Twins | B) P(B) 
@@ -141,12 +141,12 @@ P(T=A) = 0.575
 P(A | T=A) = 0.8*0.5/0.575
 P(A | T=A) = 0.6957
 
-P(A | T=A, SB=Single, FB=Twins) = P(T=A | A, FB=Twins, SB=Single) P(A | FB=Twins, SB=Single)/P(T=A | FB=Twins, SB=Single)
+P(A | T=A, FB=Twins, SB=Single) = P(T=A | A, FB=Twins, SB=Single) P(A | FB=Twins, SB=Single)/P(T=A | FB=Twins, SB=Single)
 
 P(T=A | FB=Twins, SB=Single) = P(T=A | A, FB=Twins, SB=Single) P(A | FB=Twins, SB=Single) + P(T=A | B, FB=Twins, SB=Single) P(B | FB=Twins, SB=Single)
 P(T=A | FB=Twins, SB=Single) = 0.8*0.36 + 0.35*0.64
 P(T=A | FB=Twins, SB=Single) = 0.512
 
-P(A | T=A, SB=Single, FB=Twins) = 0.8*0.36/0.512
-P(A | T=A, SB=Single, FB=Twins) = 0.5625
+P(A | T=A, FB=Twins, SB=Single) = 0.8*0.36/0.512
+P(A | T=A, FB=Twins, SB=Single) = 0.5625
 ```
