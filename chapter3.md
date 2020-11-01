@@ -1,16 +1,21 @@
 # Chapter 1 Exercises
 
-## 2E1
-(2), (4)
+## 3E1
 
-## 2E2
-(3)
 
-## 2E3
-(1), (4)
+## 3E2
 
-## 2E4
-Tossing the globe is not actually random. However the deterministic processes that determines whether it lands on water or land are very complicated and determining and describing this process is very difficult. Hence to do something useful we treat the outcome of the globe toss as effectively random to obtain some information about the globe.
+
+## 3E3
+
+
+## 3E4
+
+## 3E5
+
+## 3E6
+
+## 3E7
 
 ## 2M1 
 See code in `chap2.py`
@@ -149,4 +154,5 @@ P(T=A | FB=Twins, SB=Single) = 0.512
 
 P(A | T=A, FB=Twins, SB=Single) = 0.8*0.36/0.512
 P(A | T=A, FB=Twins, SB=Single) = 0.5625
+```
 ```
