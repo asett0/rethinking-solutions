@@ -1,0 +1,24 @@
+---
+title: "rethinking solutions 5"
+author: "Austin Shen"
+date: "28/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Medium
+
+### 5M1
+
+Test scores (S), number of exercise questions completed (E), time spent studying (T). 
+
+### 5M2
+
+```{r 5M1, echo=FALSE}
+
+
+
+```
