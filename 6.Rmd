@@ -1,0 +1,147 @@
+ ---
+title: "rethinking solutions 6"
+author: "Austin Shen"
+date: "11/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggdag)
+library(dagitty)
+library(rethinking)
+
+```
+
+### 6M1
+
+```{r 6M1, echo=FALSE}
+
+library(dagitty)
+dag <- dagitty( "dag {
+  U [unobserved]
+  X -> Y
+  X <- U <- A -> C
+  U -> B <- C
+  C <- V -> Y
+}")
+coordinates( dag ) <- list(
+  x=c(U=0,X=0,Y=2,A=1,B=1,C=2,V=2),
+  y=c(U=2,X=0,Y=0,A=3,B=1,C=2,V=1)
+)
+drawdag( dag )
+
+```
+
+The variable V introduces a collider which closes the backdoor paths from X to Y (through U, B, C and U, A, C respectively). Consequently we do should not condition on C as this would open up a backdoor.
+
+### 6H1
+
+Suppose we want to model the causal influence of the number of waffle houses (W) on divorce rate (D). We're going to assume that there is a causal relationship between W and D. We have some additional information including:
+
+* Population (numeric) [P]
+* Marriage rates (numeric) [M]
+* Median age of marriage (numeric) [A]
+
+I think the causal graph should look something like this:
+
+```{r 6H1_setup, echo=FALSE}
+
+library(dagitty)
+dag <- dagitty( "dag {
+  W -> D
+  W <- P -> D
+  M -> D
+  M <- A -> D
+}")
+coordinates( dag ) <- list(
+  x=c(W=0, D=2, P=1, M=2, A=3),
+  y=c(W=0, D=0, P=1, M=2, A=3)
+)
+drawdag( dag )
+
+```
+
+So assuming this DAG is correct if we condition on P (closing that back door) then we only have the path from W to D open, which is what we want to investigate.
+
+```{r 6H1, echo=FALSE}
+
+library(rethinking)
+data(WaffleDivorce)
+
+# scale parameters
+WaffleDivorce$W = scale(WaffleDivorce$WaffleHouses)
+WaffleDivorce$P= scale(WaffleDivorce$Population)
+WaffleDivorce$D = scale(WaffleDivorce$Divorce)
+
+# create model
+model <- quap(
+  alist(
+    D ~ dnorm( mu , sigma ),
+    mu <- a + bP*P + bW*W,
+    a ~ dnorm( 0 , 1 ),
+    bP ~ dnorm( 0 , 0.5 ),
+    bW ~ dnorm( 0 , 0.5 ),
+    sigma ~ dexp(1)
+  ),
+  data=WaffleDivorce
+)
+precis(model)
+
+```
+
+Seems strange that W actually influences D. Maybe the DAG should look like this instead, with the assumption that age (somehow) influences W.
+
+```{r 6H1_dag_update, echo=FALSE}
+
+library(dagitty)
+dag <- dagitty( "dag {
+  W -> D
+  W <- P -> D
+  M -> D
+  M <- A -> D
+  A -> W
+}")
+coordinates( dag ) <- list(
+  x=c(W=0, D=2, P=1, M=2, A=1),
+  y=c(W=0, D=0, P=1, M=-1, A=-1)
+)
+drawdag( dag )
+
+```
+
+Now we have more paths from W to D. These include:
+
+* W -> D
+* W -> P -> D (fork)
+* W -> A -> D (fork)
+* W -> A -> M -> D (fork + pipe)
+
+To close the two forks we just need to condition on the fork (P and A). By conditioning on A we also close the pipe from A -> D.
+
+```{r 6H1_again, echo=FALSE}
+
+WaffleDivorce$W = scale(WaffleDivorce$WaffleHouses)
+WaffleDivorce$P= scale(WaffleDivorce$Population)
+WaffleDivorce$D = scale(WaffleDivorce$Divorce)
+WaffleDivorce$A = scale(WaffleDivorce$MedianAgeMarriage)
+
+# create model
+model <- quap(
+  alist(
+    D ~ dnorm( mu , sigma ),
+    mu <- a + bP*P + bW*W + bA*A,
+    a ~ dnorm( 0, 1 ),
+    bP ~ dnorm( 0, 0.5 ),
+    bW ~ dnorm( 0, 0.5 ),
+    bA ~ dnorm( 0, 0.5 ),
+    sigma ~ dexp(1)
+  ),
+  data=WaffleDivorce
+)
+precis(model)
+
+```
+
+This also doesn't seem to remove the dependence of W on D.
